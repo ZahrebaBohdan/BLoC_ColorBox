@@ -8,8 +8,9 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: MyHomePage(),
+    return MaterialApp(
+      theme: ThemeData(useMaterial3: true),
+      home: const MyHomePage(),
     );
   }
 }
@@ -32,12 +33,16 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: StreamBuilder(
           stream: _bloc.outputStateStream,
+          initialData: Colors.grey,
           builder: (BuildContext context, AsyncSnapshot<Color> snapshot) {
-            return AnimatedContainer(
-                height: 100,
-                width: 100,
-                color: snapshot.data,
-                duration: const Duration(milliseconds: 500));
+            return ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: AnimatedContainer(
+                  height: 100,
+                  width: 100,
+                  color: snapshot.data,
+                  duration: const Duration(milliseconds: 500)),
+            );
           },
         ),
       ),
@@ -49,6 +54,9 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: () {
               _bloc.inputEventSink.add(ColorEvent.event_green);
             },
+          ),
+          const SizedBox(
+            width: 10,
           ),
           FloatingActionButton(
             backgroundColor: Colors.red,
